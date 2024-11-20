@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respuestas del Examen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1 id="exam-title">Examen: </h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre del Usuario</th>
+            <th>Puntos Obtenidos</th>
+            <th>Puntaje Total</th>
+            <th>Porcentaje</th>
+        </tr>
+        </thead>
+        <tbody id="responses-table">
+        <!-- Respuestas dinámicas -->
+        </tbody>
+    </table>
+    <button onclick="window.location.href='/pruebas.html'">Regresar a Pruebas</button>
+</div>
+
+<script>
+    // Obtener el ID del examen desde la URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const examId = queryParams.get('id');
+
+    fetch(`/api/exam-responses/${examId}`)
+        .then((response) => {
+            if (!response.ok) throw new Error('No se pudo cargar la información del examen.');
+            return response.json();
+        })
+        .then((data) => {
+            const { title, responses } = data;
+
+            // Mostrar el título del examen
+            document.getElementById('exam-title').textContent = `Examen: ${title}`;
+
+            // Mostrar las respuestas
+            const responsesTable = document.getElementById('responses-table');
+            responses.forEach(({ name, answers }) => {
+                const score = answers.reduce((total, answer) => {
+                    return total + (answer.isCorrect ? answer.score : 0);
+                }, 0);
+                const totalScore = answers.reduce((sum, answer) => sum + answer.score, 0);
+                const percentage = ((score / totalScore) * 100).toFixed(2);
+
+                const row = `
+                <tr>
+                    <td>${name}</td>
+                    <td>${score} pts</td>
+                    <td>${totalScore} pts</td>
+                    <td>${percentage}%</td>
+                </tr>
+            `;
+                responsesTable.insertAdjacentHTML('beforeend', row);
+            });
+        })
+        .catch((error) => {
+            console.error('Error al cargar las respuestas:', error);
+            alert('No se pudo cargar las respuestas del examen.');
+        });
+</script>
+</body>
+</html>

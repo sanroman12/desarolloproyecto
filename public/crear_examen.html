@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Examen</title>
+  <link rel="stylesheet" href="stylesexam.css">
+</head>
+<body>
+<div class="header">
+  <h1 id="exam-title">Crear Examen</h1>
+  <button class="edit-exam-btn" id="edit-exam-btn">Editar nombre</button>
+</div>
+<div class="question-list" id="question-list">
+  <!-- Las preguntas se agregarán dinámicamente aquí -->
+</div>
+
+<!-- Botón flotante -->
+<button class="floating-button" id="add-question-btn">+</button>
+
+<!-- Botón para guardar el examen -->
+<button id="save-exam-btn" class="save-exam-btn">Guardar Examen</button>
+
+<!-- Modal para agregar/editar preguntas -->
+<!-- Modal para agregar/editar preguntas -->
+<div class="modal" id="question-modal">
+  <div class="modal-content">
+    <h3 id="modal-title">Agregar pregunta</h3>
+    <input type="text" id="question-title" placeholder="Escribe tu pregunta">
+
+    <!-- Casilla para definir si es abierta o opción múltiple -->
+    <label>
+      <input type="checkbox" id="is-multiple-choice">
+      Mostrar respuestas (Opción múltiple)
+    </label>
+
+    <!-- Nuevo campo para el puntaje -->
+    <label for="question-score">Puntaje de la pregunta:</label>
+    <input type="number" id="question-score" min="1" value="1" placeholder="Asigna un puntaje">
+
+    <div class="answers-section" id="answers-section">
+      <!-- Respuestas dinámicas -->
+    </div>
+    <button id="add-answer-btn">Agregar respuesta</button>
+    <button id="save-question-btn">Guardar</button>
+    <button id="close-question-modal">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal para editar el nombre del examen -->
+<div class="modal" id="edit-exam-modal">
+  <div class="modal-content">
+    <h3>Editar nombre del examen</h3>
+    <input type="text" id="exam-name-input" placeholder="Nuevo nombre del examen">
+    <button id="save-exam-name-btn">Guardar</button>
+    <button id="cancel-exam-name-btn">Cancelar</button>
+  </div>
+</div>
+
+<script src="crear_examen.js"></script>
+</body>
+</html>

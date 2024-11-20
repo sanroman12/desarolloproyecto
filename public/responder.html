@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responder Examen</title>
+</head>
+<body>
+<h1 id="exam-title">Cargando Examen...</h1>
+
+<form id="response-form">
+  <!-- Nombre del participante -->
+  <label for="name">Nombre:</label>
+  <input type="text" id="name" placeholder="Tu nombre" required />
+
+  <!-- Contenedor de preguntas -->
+  <div id="questions-container">
+    <!-- Las preguntas del examen se cargarán dinámicamente aquí -->
+  </div>
+
+  <button type="submit">Enviar respuestas</button>
+</form>
+
+<script>
+  const queryParams = new URLSearchParams(window.location.search);
+  const examId = queryParams.get('id');
+  const responseForm = document.getElementById('response-form');
+  const questionsContainer = document.getElementById('questions-container');
+  const examTitle = document.getElementById('exam-title');
+
+  // Validar el ID del examen y cargar preguntas
+  fetch(`/api/get-exam/${examId}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('No se encontró el examen.');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Mostrar título del examen
+            examTitle.textContent = `Examen: ${data.title}`;
+
+            // Mostrar preguntas
+            data.questions.forEach((question, index) => {
+              const questionDiv = document.createElement('div');
+              questionDiv.className = 'question';
+              questionDiv.dataset.title = question.title;
+
+              questionDiv.innerHTML = `
+                        <h3>${index + 1}. ${question.title}</h3>
+                        ${question.isMultipleChoice
+                      ? question.answers
+                              .map(
+                                      (answer, i) =>
+                                              `<label>
+                                            <input type="radio" name="question-${index}" value="${answer.text}" />
+                                            ${answer.text}
+                                        </label><br>`
+                              )
+                              .join('')
+                      : `<textarea name="question-${index}" placeholder="Escribe tu respuesta"></textarea>`}
+                    `;
+              questionsContainer.appendChild(questionDiv);
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+            alert('Error al cargar el examen. Verifica el ID ingresado.');
+            window.location.href = '/unirse.html';
+          });
+
+  // Enviar respuestas
+  responseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    if (!name) {
+      alert('Por favor ingresa tu nombre.');
+      return;
+    }
+
+    const answers = [];
+    const questionElements = questionsContainer.querySelectorAll('.question');
+    questionElements.forEach((questionEl) => {
+      const questionTitle = questionEl.dataset.title;
+      const selectedAnswer =
+              questionEl.querySelector('input[type="radio"]:checked')?.value ||
+              questionEl.querySelector('textarea')?.value.trim();
+
+      answers.push({
+        questionTitle,
+        selectedAnswer: selectedAnswer || '',
+      });
+    });
+
+    // Validar que se haya respondido al menos una pregunta
+    if (!answers.some((a) => a.selectedAnswer)) {
+      alert('Responde al menos una pregunta antes de enviar.');
+      return;
+    }
+
+    fetch('/api/save-response', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ examId, name, answers }),
+    })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error('No se pudieron guardar las respuestas.');
+              }
+              alert('Respuestas enviadas con éxito.');
+              window.location.href = '/';
+            })
+            .catch((error) => {
+              console.error('Error al enviar las respuestas:', error);
+              alert('Hubo un problema al enviar las respuestas. Inténtalo nuevamente.');
+            });
+  });
+</script>
+</body>
+</html>

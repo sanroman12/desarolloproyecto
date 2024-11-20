@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear</title>
+</head>
+<body>
+<h1>Crear</h1>
+<p>Elige una opción para crear:</p>
+
+<!-- Botón para crear examen -->
+<button id="create-exam-btn">Crear Examen</button>
+
+<!-- Botón para crear formulario -->
+<button id="create-form-btn">Crear Formulario</button>
+
+<script>
+    // Redirigir al usuario al crear un examen
+    document.getElementById('create-exam-btn').addEventListener('click', () => {
+        window.location.href = '/crear_examen.html';
+    });
+
+    // Redirigir al usuario al crear un formulario
+    document.getElementById('create-form-btn').addEventListener('click', () => {
+        window.location.href = '/crear_formulario.html';
+    });
+</script>
+</body>
+</html>

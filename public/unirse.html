@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unirse a Examen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Unirse a un Examen</h1>
+    <form id="join-exam-form">
+        <label for="exam-id">ID del Examen:</label>
+        <input type="text" id="exam-id" placeholder="Ingresa el ID del examen" required>
+
+        <label for="user-name">Tu Nombre:</label>
+        <input type="text" id="user-name" placeholder="Ingresa tu nombre" required>
+
+        <button type="submit">Unirse</button>
+    </form>
+    <p id="error-message" class="error-message"></p>
+</div>
+
+<script>
+    document.getElementById('join-exam-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const examId = document.getElementById('exam-id').value.trim();
+        const userName = document.getElementById('user-name').value.trim();
+        const errorMessage = document.getElementById('error-message');
+
+        // Limpiar mensajes de error
+        errorMessage.textContent = '';
+
+        // Validar campos vacíos
+        if (!examId || !userName) {
+            errorMessage.textContent = 'Por favor, llena todos los campos.';
+            return;
+        }
+
+        // Verificar si el examen existe
+        fetch(`/api/get-exam/${examId}`) // Ruta GET al servidor
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Examen no encontrado');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Examen encontrado:', data);
+                // Redirigir al examen con el ID y nombre del usuario
+                window.location.href = `/responder.html?id=${examId}&name=${encodeURIComponent(userName)}`;
+            })
+            .catch((error) => {
+                console.error('Error al unirse al examen:', error);
+                errorMessage.textContent = 'No se pudo encontrar el examen. Verifica el ID ingresado.';
+            });
+    });
+</script>
+</body>
+</html>

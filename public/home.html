@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot Fake</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<!-- Navbar -->
+<header class="navbar">
+    <div class="logo">Kahoot Fake</div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="unirse.html" class="btn-unirse">Unirse</a></li>
+            <li><a href="pruebas.html">Mis Pruebas</a></li>
+            <li><a href="crear.html">Crear prueba</a></li>
+        </ul>
+    </nav>
+    <!-- User Icon -->
+    <div class="user-icon" id="user-icon">
+        K <!-- Texto inicial (se actualiza dinámicamente) -->
+        <div class="dropdown" id="dropdown">
+            <button id="login-btn">Iniciar sesión</button>
+            <button id="register-btn">Crear cuenta</button>
+        </div>
+    </div>
+</header>
+
+<script>
+    const userIcon = document.getElementById('user-icon');
+    const dropdown = document.getElementById('dropdown');
+
+    // Mostrar u ocultar el menú desplegable
+    userIcon.addEventListener('click', (event) => {
+        event.stopPropagation(); // Evita que el clic se propague al documento
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Manejar clic en las opciones
+    document.getElementById('login-btn').addEventListener('click', () => {
+        window.location.href = '/ingreso.html'; // Redirige al inicio de sesión
+    });
+
+    document.getElementById('register-btn').addEventListener('click', () => {
+        window.location.href = '/crear_cuenta.html'; // Redirige a crear cuenta
+    });
+
+    // Cerrar el menú al hacer clic fuera del botón
+    document.addEventListener('click', () => {
+        dropdown.style.display = 'none';
+    });
+
+    // Verificar la sesión al cargar la página
+    fetch('/api/session')
+        .then(response => response.json())
+        .then(data => {
+            if (data.loggedIn) {
+                // Cambiar la "K" por la inicial del correo del usuario
+                userIcon.innerText = data.user.email.charAt(0).toUpperCase();
+                dropdown.innerHTML = `
+                    <button id="logout-btn">Cerrar sesión</button>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    fetch('/api/logout', { method: 'POST' })
+                        .then(() => {
+                            window.location.href = '/ingreso.html';
+                        });
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al verificar la sesión:', error);
+        });
+</script>
+</body>
+</html>

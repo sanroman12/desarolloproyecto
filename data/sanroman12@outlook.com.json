@@ -1,0 +1,40 @@
+{
+  "exams": [
+    {
+      "title": "mate",
+      "questions": [
+        {
+          "title": "2+2 (Pregunta abierta)",
+          "isMultipleChoice": false,
+          "answers": [
+            {
+              "text": "4",
+              "isCorrect": false
+            },
+            {
+              "text": "5",
+              "isCorrect": true
+            }
+          ],
+          "score": 2
+        },
+        {
+          "title": "4+4",
+          "isMultipleChoice": true,
+          "answers": [
+            {
+              "text": "8",
+              "isCorrect": true
+            },
+            {
+              "text": "3",
+              "isCorrect": false
+            }
+          ],
+          "score": 1
+        }
+      ],
+      "id": 261075
+    }
+  ]
+}

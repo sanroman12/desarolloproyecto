@@ -1,0 +1,127 @@
+ /* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    position: relative;
+}
+
+h1 {
+    margin: 0;
+}
+
+.edit-exam-btn {
+    margin-left: 1rem;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-exam-btn:hover {
+    background-color: #0056b3;
+}
+
+.question-list {
+    margin: 2rem;
+}
+
+/* Recuadro para preguntas */
+.question-item {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+/* Botón flotante fijo */
+.floating-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    background-color: #5a6e3a;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.floating-button:hover {
+    background-color: #47622a;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content input[type="text"] {
+    width: calc(100% - 2rem);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.modal-content button {
+    padding: 0.5rem 1rem;
+    margin: 0.3rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.modal-content .save-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-content .save-btn:hover {
+    background-color: #218838;
+}
+
+.modal-content .cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-content .cancel-btn:hover {
+    background-color: #c82333;
+}

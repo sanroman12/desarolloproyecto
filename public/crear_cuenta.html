@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Cuenta</title>
+</head>
+<body>
+<h1>Crear cuenta</h1>
+<form id="crear-cuenta-form" action="/api/register" method="POST">
+  <!-- Email -->
+  <label for="email">Email</label><br>
+  <input type="email" id="email" name="email" required placeholder="Ingresa tu correo"><br><br>
+
+  <!-- Contraseña -->
+  <label for="password">Contraseña</label><br>
+  <input type="password" id="password" name="password" required placeholder="Crea una contraseña"><br><br>
+
+  <!-- Día de nacimiento -->
+  <label>Día de nacimiento</label><br>
+  <input type="number" id="day" name="day" min="1" max="31" required placeholder="Día">
+  <input type="number" id="month" name="month" min="1" max="12" required placeholder="Mes">
+  <input type="number" id="year" name="year" min="1900" max="2023" required placeholder="Año"><br><br>
+
+  <!-- Botón de registro -->
+  <button type="submit">Registrar</button>
+</form>
+</body>
+</html>

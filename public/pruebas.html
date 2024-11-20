@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pruebas</title>
+    <link rel="stylesheet" href="stylespruebas.css">
+</head>
+<body>
+<div class="header">
+    <h1>Mis Pruebas</h1>
+</div>
+
+<div id="content">
+    <!-- Aquí se cargarán dinámicamente los exámenes o el mensaje de inicio de sesión -->
+</div>
+
+<script>
+    // Función para obtener los exámenes del usuario conectado
+    function loadExams() {
+        fetch('/api/get-exams') // Llamada al servidor para obtener los exámenes
+            .then((response) => response.json())
+            .then((data) => {
+                const contentDiv = document.getElementById('content');
+
+                // Verificar si el usuario está conectado
+                if (!data.loggedIn) {
+                    // Mostrar mensaje de iniciar sesión
+                    contentDiv.innerHTML = `
+            <div class="no-user">
+              <p>Por favor, inicia sesión para ver tus exámenes.</p>
+              <button id="login-btn">Iniciar sesión</button>
+            </div>
+          `;
+
+                    // Redirigir a la página de inicio de sesión
+                    document.getElementById('login-btn').addEventListener('click', () => {
+                        window.location.href = '/ingreso.html';
+                    });
+                } else if (data.exams && data.exams.length > 0) {
+                    // Mostrar los exámenes del usuario
+                    const examsHtml = data.exams.map((exam, index) => `
+            <div class="exam-item">
+              <h3>${index + 1}. ${exam.title}</h3>
+              <!-- Dentro del bucle donde se listan los exámenes -->
+                <button onclick="window.location.href='/ver_respuestas.html?id=${exam.id}'">Ver Examen</button>
+            </div>
+          `).join('');
+                    contentDiv.innerHTML = `<div class="exam-list">${examsHtml}</div>`;
+
+                    // Agregar eventos para los botones "Ver examen"
+                    document.querySelectorAll('.view-exam-btn').forEach((btn) => {
+                        btn.addEventListener('click', (event) => {
+                            const examIndex = event.target.dataset.index;
+                            window.location.href = `/ver_examen.html?index=${examIndex}`;
+                        });
+                    });
+                } else {
+                    // Mostrar mensaje de que no hay exámenes
+                    contentDiv.innerHTML = `
+            <div class="no-exams">
+              <p>No tienes exámenes creados. ¡Crea uno ahora!</p>
+              <button id="create-exam-btn">Crear Examen</button>
+            </div>
+          `;
+
+                    // Redirigir a la página para crear exámenes
+                    document.getElementById('create-exam-btn').addEventListener('click', () => {
+                        window.location.href = '/crear_examen.html';
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error al cargar los exámenes:', error);
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = `<p>Error al cargar tus exámenes. Intenta de nuevo más tarde.</p>`;
+            });
+    }
+
+    // Cargar exámenes al iniciar la página
+    window.onload = loadExams;
+</script>
+</body>
+</html>
