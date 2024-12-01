@@ -1,0 +1,25 @@
+{
+  "exams": [
+    {
+      "title": "X",
+      "questions": [
+        {
+          "title": "Marsh se la come?",
+          "isMultipleChoice": true,
+          "answers": [
+            {
+              "text": "SI",
+              "isCorrect": true
+            },
+            {
+              "text": "SI",
+              "isCorrect": true
+            }
+          ],
+          "score": 1
+        }
+      ],
+      "id": 911256
+    }
+  ]
+}

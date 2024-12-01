@@ -7,6 +7,26 @@ const session = require('express-session');
 const app = express();
 const PORT = 3000;
 
+const sql = require('mssql'); // Importar mssql
+require('dotenv').config(); // Cargar variables de entorno
+
+// Configuración de la conexión a SQL Server
+const dbConfig = {
+    server: process.env.DB_SERVER, // Servidor sin el "\SQLEXPRESS"
+    database: process.env.DB_NAME,
+    port: parseInt(process.env.DB_PORT, 10), // Especifica el puerto
+    options: {
+      encrypt: true,
+      trustServerCertificate: true,
+    },
+  };
+  
+
+// Conexión a SQL Server
+sql.connect(dbConfig)
+  .then(() => console.log('Conexión a SQL Server exitosa'))
+  .catch(err => console.error('Error al conectar a SQL Server:', err));
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
