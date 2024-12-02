@@ -1,0 +1,40 @@
+{
+  "exams": [
+    {
+      "title": "bush",
+      "questions": [
+        {
+          "title": "es gay",
+          "isMultipleChoice": true,
+          "answers": [
+            {
+              "text": "si",
+              "isCorrect": true
+            },
+            {
+              "text": "no",
+              "isCorrect": false
+            }
+          ],
+          "score": 5
+        },
+        {
+          "title": "si (Pregunta abierta)",
+          "isMultipleChoice": false,
+          "answers": [
+            {
+              "text": "no",
+              "isCorrect": false
+            },
+            {
+              "text": "tal vez",
+              "isCorrect": false
+            }
+          ],
+          "score": 5
+        }
+      ],
+      "id": 675404
+    }
+  ]
+}

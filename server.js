@@ -7,6 +7,10 @@ const session = require('express-session');
 const app = express();
 const PORT = 3000;
 
+
+const mongoose = require('mongoose');
+
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
