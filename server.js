@@ -1,31 +1,44 @@
+require('dotenv').config(); // Asegúrate de cargar las variables de entorno
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const session = require('express-session');
+const sql = require('mssql');
 
 const app = express();
 const PORT = 3000;
 
-const sql = require('mssql'); // Importar mssql
-require('dotenv').config(); // Cargar variables de entorno
+console.log('DB_SERVER:', process.env.DB_SERVER);
+console.log('DB_NAME:', process.env.DB_NAME);
+console.log('DB_PORT:', process.env.DB_PORT);
 
-// Configuración de la conexión a SQL Server
+
 const dbConfig = {
-    server: process.env.DB_SERVER, // Servidor sin el "\SQLEXPRESS"
-    database: process.env.DB_NAME,
-    port: parseInt(process.env.DB_PORT, 10), // Especifica el puerto
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    server: process.env.DB_SERVER,
+    database: process.env.DB_DATABASE,
+    port: parseInt(process.env.DB_PORT),
     options: {
-      encrypt: true,
-      trustServerCertificate: true,
-    },
-  };
+        encrypt: process.env.DB_ENCRYPT === 'true', // Deshabilitar SSL
+        trustServerCertificate: true // Confiar en el certificado del servidor
+    }
+};
+
+  
+  
+sql.connect(dbConfig)
+  .then(() => {
+    console.log('Conexión a SQL Server exitosa');
+  })
+  .catch((err) => {
+    console.error('Error al conectar a SQL Server:', err);
+  });
+
   
 
-// Conexión a SQL Server
-sql.connect(dbConfig)
-  .then(() => console.log('Conexión a SQL Server exitosa'))
-  .catch(err => console.error('Error al conectar a SQL Server:', err));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
